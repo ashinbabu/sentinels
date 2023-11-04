@@ -145,7 +145,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             Text(
                               'CONTINUE WITH EMAIL',
                               style: GoogleFonts.montserrat(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       color: Color(PRIMARY_COLOR),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500)),
