@@ -5,9 +5,10 @@ import 'package:busco/models/user.dart';
 import 'package:busco/providers/authentication_provider.dart';
 import 'package:busco/providers/user_details_provider.dart';
 import 'package:busco/utils/constants.dart';
+import 'package:busco/utils/constants.dart';
 
 class AuthenticationApi {
-  // static final baseURL = 'https://services.mimiandbowbow.com/api';
+  static final baseURL = baseUrl;
 
   //1. Login request to Api
   static Future<bool> loginRequest(AuthProvider authProvider,

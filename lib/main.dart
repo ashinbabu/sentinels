@@ -1,4 +1,7 @@
 import 'package:busco/providers/authentication_provider.dart';
+import 'package:busco/providers/destination_provider.dart';
+import 'package:busco/providers/qr_code_provider.dart';
+import 'package:busco/providers/tickets_provider.dart';
 import 'package:busco/providers/user_details_provider.dart';
 import 'package:busco/routes/routes.dart';
 import 'package:busco/utils/theme_data.dart';
@@ -17,8 +20,11 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => UserDetailsProvider()),
-        
+        ChangeNotifierProvider(create: (context)=>DestinationProvider()),
+        ChangeNotifierProvider(create: (context)=>TicketProvider()),
+        ChangeNotifierProvider(create: (context)=>QRCodeProvider())
       ],
+    
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'BusCo',

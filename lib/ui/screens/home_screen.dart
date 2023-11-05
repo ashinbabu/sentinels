@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:busco/models/destinations.dart';
+import 'package:busco/providers/destination_provider.dart';
 import 'package:busco/ui/widgets/scaffold_widgets/app_bar_w_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,7 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
-
+  Destinations? _selectedDestination;
+  TextEditingController nameController = TextEditingController(text:'');
   @override
   void reassemble() {
     super.reassemble();
@@ -57,7 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-  
+   final deviceWidth = MediaQuery.of(context).size.width;
+   DestinationProvider destinationProvider = Provider.of(context);
     return WillPopScope(
       onWillPop: _onWillPopScope,
       child: Scaffold(
@@ -90,7 +94,78 @@ class _HomeScreenState extends State<HomeScreen> {
                       'Barcode Type:   Data: ${result!.code}')
                   : Text('Scan a code'),
             ),
-          )
+          ),
+          TextField(
+                      controller: nameController,
+                      enabled: false,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                        hintText: 'Starting Location',
+                        hintStyle: GoogleFonts.montserrat(),
+                      ),
+                    ),
+           Container(
+                          width: deviceWidth - 30,
+                          child: Card(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<Destinations>(
+                                  // value: _selectedService,
+                                  hint: Text('Select the Destination '),
+                                  items: destinationProvider.serviceNames
+                                      .map((Destinations value) {
+                                    return DropdownMenuItem<Destinations>(
+                                      value: value,
+                                      child: Text(value.serviceName),
+                                    );
+                                  }).toList(),
+                                  onChanged: (destination) {
+                                    setState(() {
+                                      _selectedDestination = destination;
+                                    });
+                                    print(_selectedDestination);
+                                  },
+                                ),
+                              ),
+                            ),
+                          )),
+          Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedButton(
+                      onPressed: (){
+                      Navigator.pushNamed(context, 'tickets');
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        height: 60,
+                        child: Center(
+                          child: Text(
+                            'CONTINUE',
+                            style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500)),
+                          ),
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                        )),
+                        elevation: MaterialStateProperty.all(10),
+                        backgroundColor:
+                            MaterialStateProperty.all(Color(PRIMARY_COLOR)),
+                      ),
+                    ),
+                  ),
                    
                    
                     
