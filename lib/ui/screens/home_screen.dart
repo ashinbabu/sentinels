@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:busco/models/destinations.dart';
 import 'package:busco/providers/destination_provider.dart';
+import 'package:busco/providers/qr_code_provider.dart';
+import 'package:busco/services/qr_api.dart';
 import 'package:busco/ui/widgets/scaffold_widgets/app_bar_w_search.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,12 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    _initialApiCalls();
     super.initState();
   }
 
-  _initialApiCalls() async {
-   
+  _getQRDetails(qr_code) async {
+    QRCodeProvider qrCodeProvider = Provider.of(context,listen: false);
+   await QrApi.getQRDetails(qrCodeProvider, qr_code: qr_code);
   }
 
  
@@ -62,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
    final deviceWidth = MediaQuery.of(context).size.width;
    DestinationProvider destinationProvider = Provider.of(context);
+   QRCodeProvider qrCodeProvider = Provider.of(context);
     return WillPopScope(
       onWillPop: _onWillPopScope,
       child: Scaffold(
@@ -91,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Center(
               child: (result != null)
                   ? Text(
-                      'Barcode Type:   Data: ${result!.code}')
+                      '${result!.code}')
                   : Text('Scan a code'),
             ),
           ),
@@ -136,11 +139,25 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           )),
+                          TextField(
+                      controller: nameController,
+                      enabled: false,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 20,
+                        ),
+                        hintText: 'Fare Rs.30/-',
+                        hintStyle: GoogleFonts.montserrat(),
+                      ),
+                    ),
           Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: ElevatedButton(
                       onPressed: (){
-                      Navigator.pushNamed(context, 'tickets');
+                      Navigator.pushNamed(context, '/confirm_payment');
                       },
                       child: Container(
                         width: double.infinity,
@@ -186,6 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+         _getQRDetails(result!.code);
       });
     });
   }

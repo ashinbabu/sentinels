@@ -36,17 +36,24 @@ static createTicket(
       userId,
       source,
       destination,
-      fare
+      fare,
+      busid,
+      seatno,
+      busname
      ) async {
     bool success = false;
 
     var request =
         http.MultipartRequest('POST', Uri.parse('${baseUrl}create-ticket'));
     request.fields.addAll({
+      
       'userId': '$userId',
       'source': '$source',
       'destination': '$destination',
-      'fare': '$fare'
+      'fare': '$fare',
+      'bus_id':'$busid',
+      'seat_no':'$seatno',
+      'bus_name':'$busname',
     });
   
   

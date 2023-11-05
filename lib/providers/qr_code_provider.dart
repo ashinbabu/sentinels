@@ -8,5 +8,5 @@ set setQRCode(QRCode qrCode){
 _qrCode = qrCode;
 notifyListeners();
 }
-
+QRCode get qrCode => _qrCode;
 }

@@ -72,10 +72,11 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
+         
             Image.asset(
               './assets/images/Splash.png',
             ),
-            Image.asset('./assets/images/logo-splash.png'),
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
               child: LinearProgressIndicator(

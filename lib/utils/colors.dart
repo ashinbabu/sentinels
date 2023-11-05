@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const PRIMARY_COLOR = 0xffFDC500;
+const PRIMARY_COLOR = 0xff8b0a50;
 
 Map<int, Color> color = {
   50: Color.fromRGBO(253, 197, 0, .1),
@@ -14,7 +14,7 @@ Map<int, Color> color = {
   800: Color.fromRGBO(253, 197, 0, .9),
   900: Color.fromRGBO(253, 197, 0, 1),
 };
-MaterialColor swatchColor = MaterialColor(0xffFDC500, color);
+MaterialColor swatchColor = MaterialColor(0xff8b0a50, color);
 
 const TEXT_COLOR = 0xff343434;
 

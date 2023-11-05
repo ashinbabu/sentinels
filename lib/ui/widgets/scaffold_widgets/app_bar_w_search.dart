@@ -53,42 +53,7 @@ class _AppBarWithSearchState extends State<AppBarWithSearch> {
           ),
         ],
       ),
-      actions: [
-        Padding(
-          padding: EdgeInsets.only(right: 15),
-          child: Row(
-            children: [
-              widget.isFavVisible
-                  ? InkWell(
-                      onTap: () => Navigator.pushNamed(context, '/wishlist'),
-                      borderRadius: BorderRadius.circular(1000),
-                      child: ImageIcon(
-                        AssetImage('./assets/images/heart-white.png'),
-                        color: Color(TEXT_COLOR),
-                      ),
-                    )
-                  : Container(),
-              SizedBox(width: 20),
-              widget.isCartVisible
-                  ? InkWell(
-                      onTap: () => Navigator.pushNamed(context, '/mycart'),
-                      borderRadius: BorderRadius.circular(1000),
-                      child: Stack(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ImageIcon(
-                            AssetImage('./assets/images/top-bar-cart.png'),
-                            color: Color(TEXT_COLOR),
-                          ),
-                        ),
-                      
-                      ]),
-                    )
-                  : Container(),
-            ],
-          ),
-        ),
-      ],
+     
       bottom: widget.isSearchVisible
           ? PreferredSize(
               preferredSize: Size(double.infinity, 10),

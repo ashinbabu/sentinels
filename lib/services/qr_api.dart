@@ -12,11 +12,7 @@ class QrApi{
       {required qr_code}) async {
     bool success = false;
     QRCode qrCode;
-    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}get-qr-details'));
-
-    request.fields.addAll({
-      'qr_code':qr_code
-    });
+    var request = http.MultipartRequest('GET', Uri.parse('${baseUrl}get-qr-details/?qr_code=$qr_code'));
 
     http.StreamedResponse response = await request.send();
 
@@ -25,10 +21,15 @@ class QrApi{
 
       var body = json.decode(responseString);
        var data = body['data'];
+       
+       print('data:$data');
        qrCode = data[0];
       qrCodeProvider.setQRCode = qrCode;
+      print('API_CALLED');
+      print(qrCode);
       } else {
-        
+        print("ERROR");
+        print(response!.reasonPhrase);
       }
       return success;
       }

@@ -27,6 +27,7 @@ void initState() {
   Widget build(BuildContext context) {
     TicketProvider _ticketProvider = Provider.of(context);
     return Scaffold(
+      appBar: AppBar(title: Text('Tickets'),),
       body: SafeArea(
         child: ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
