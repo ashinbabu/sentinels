@@ -1,16 +1,9 @@
-# busco
+# busco - Make a Ton 6.0
 
-A new Flutter project.
+We all have suffered the hassle of carrying cash or perfect change for traveling in unreserved local buses.Also not able to find whether a coming bus is crowded before hand, busCo aims to solve this problem
 
-## Getting Started
+# Team Members:
+1. Aneetta Sara Shany
+2. Ashin Babu
+3. Nithin Kurian
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
