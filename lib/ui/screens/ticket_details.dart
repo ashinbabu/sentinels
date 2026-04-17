@@ -10,6 +10,9 @@ class TicketDetails extends StatefulWidget {
 class _TicketDetailsState extends State<TicketDetails> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ticket Details')),
+      body: const Center(child: Text('Ticket details will appear here')),
+    );
   }
 }

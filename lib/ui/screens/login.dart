@@ -186,15 +186,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 10,
                   ),
                   //Yellow Button with CONTINUE
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: sidePadding),
-                    child: ElevatedButton(
-                      // onPressed: _handleContinue,
-                      onPressed: (){
-                        showTextSnackBar(context, 'Login Successful');
-                        Navigator.pushReplacementNamed(context, '/home');
-      
-                      },
+                   Padding(
+                     padding: EdgeInsets.symmetric(horizontal: sidePadding),
+                     child: ElevatedButton(
+                       onPressed: _handleContinue,
                       child: Container(
                         width: double.infinity,
                         height: 60,
@@ -223,10 +218,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 20,
                   ),
                   //Forgot Password
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/forgot-password');
-                    },
+                   InkWell(
+                     onTap: () {
+                       showTextSnackBar(context, 'Forgot password is not implemented yet');
+                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

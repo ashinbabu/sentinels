@@ -65,6 +65,9 @@ class AuthProvider with ChangeNotifier {
   removeAuthToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', '');
+    await prefs.setInt('userId', 0);
+    _authToken = '';
+    _userId = 0;
     _loginState = false;
     notifyListeners();
   }

@@ -33,12 +33,12 @@ class _TicketItemState extends State<TicketItem> {
           Text('Destination:${widget.ticket.destination}')
          ],),
          Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('Fare:${widget.ticket.fare}')],
-         )
-         ],),
-       ),
+           crossAxisAlignment: CrossAxisAlignment.center,
+           mainAxisAlignment: MainAxisAlignment.center,
+           children: [Text('Fare: ₹${widget.ticket.fare}')],
+          )
+          ],),
+        ),
      )
     );
   }
