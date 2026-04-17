@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:busco/models/user.dart';
 import 'package:busco/providers/authentication_provider.dart';
 import 'package:busco/providers/user_details_provider.dart';
-import 'package:busco/utils/constants.dart';
+import 'package:busco/services/api_client.dart';
 import 'package:busco/utils/constants.dart';
 
 class AuthenticationApi {
@@ -12,45 +12,20 @@ class AuthenticationApi {
 
   //1. Login request to Api
   static Future<bool> loginRequest(AuthProvider authProvider,
-      {required email, required password}) async {
+      {required String email, required String password}) async {
     bool success = false;
-    var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}login'));
-
-    request.fields.addAll({
+    final response = await ApiClient.postForm('login', fields: {
       'email': email,
       'password': password,
     });
 
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      var responseString = await response.stream.bytesToString();
-
-      var body = json.decode(responseString);
-
-      if (body["status"] == "success") {
-        authProvider.setAuthToken(
-            body['data']["token"], body['data']["user_id"]);
-
-        success = true;
-      } else if (body['status'] == 'failure') {
-        authProvider.errorMessage = body['error'];
-      } else {
-        authProvider.errorMessage = 'Something went wrong';
-      }
+    if (response.success && response.body['data'] is Map) {
+      final data = response.body['data'] as Map;
+      authProvider
+          .setAuthToken(data["token"].toString(), int.tryParse(data["user_id"].toString()) ?? 0);
+      success = true;
     } else {
-      var responseString = await response.stream.bytesToString();
-
-      var body = json.decode(responseString);
-      print(body);
-
-      if (body["status"] == 'failure') {
-        if (body.containsKey('error')) {
-          authProvider.errorMessage = body['error'];
-        } else {
-          authProvider.errorMessage = 'Something went wrong';
-        }
-      }
+      authProvider.errorMessage = response.error ?? 'Something went wrong';
     }
     return success;
   }
@@ -64,46 +39,30 @@ class AuthenticationApi {
     required confirmPass,
   }) async {
     bool success = false;
-
-    var request =
-        http.MultipartRequest('POST', Uri.parse('${baseUrl}register'));
-    request.fields.addAll({
+    final response = await ApiClient.postForm('register', fields: {
       'name': name,
       'email': email,
       'password': password,
       'confirm_password': confirmPass
     });
 
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 201) {
-      var responseString = await response.stream.bytesToString();
-
-      var body = json.decode(responseString);
-
-      print(body);
-
-      if (body["status"] == 'failure') {
-        success = true;
+    if (response.success) {
+      success = true;
+    } else if (response.body['error'] is Map) {
+      final errors = response.body['error'] as Map;
+      if (errors.containsKey('email')) {
+        authProvider.errorMessage = errors['email'][0];
+      } else if (errors.containsKey('name')) {
+        authProvider.errorMessage = errors['name'][0];
+      } else if (errors.containsKey('password')) {
+        authProvider.errorMessage = errors['password'][0];
+      } else if (errors.containsKey('confirm_password')) {
+        authProvider.errorMessage = errors['confirm_password'][0];
       } else {
-        print(body['error']['email'][0]);
+        authProvider.errorMessage = response.error ?? 'Something went wrong';
       }
     } else {
-      var responseString = await response.stream.bytesToString();
-
-      var body = json.decode(responseString);
-
-      if (body['error'].containsKey('email')) {
-        authProvider.errorMessage = body['error']['email'][0];
-      } else if (body['error'].containsKey('name')) {
-        authProvider.errorMessage = body['error']['name'][0];
-      } else if (body['error'].containsKey('password')) {
-        authProvider.errorMessage = body['error']['password'][0];
-      } else if (body['error'].containsKey('confirm_password')) {
-        authProvider.errorMessage = body['error']['confirm_password'][0];
-      } else {
-        authProvider.errorMessage = 'Something went wrong';
-      }
+      authProvider.errorMessage = response.error ?? 'Something went wrong';
     }
 
     return success;
@@ -113,24 +72,17 @@ class AuthenticationApi {
   static getProfileDetailsRequest(AuthProvider authProvider,
       UserDetailsProvider userDetailsProvider) async {
     bool success = false;
+    final response = await ApiClient.get(
+      'user/data',
+      query: {'user_id': authProvider.userId},
+    );
 
-    final request = http.MultipartRequest(
-        'GET', Uri.parse('${baseUrl}user/data?user_id=${authProvider.userId}'));
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      var responseString = await response.stream.bytesToString();
-
-      var body = json.decode(responseString);
-
-      if (body["status"] == 'success') {
-        userDetailsProvider.setUserDetails(User.fromMap(body['data']));
-        print(body);
-        success = true;
-      }
+    if (response.success && response.body['data'] is Map) {
+      userDetailsProvider
+          .setUserDetails(User.fromMap(Map<String, dynamic>.from(response.body['data'])));
+      success = true;
     } else {
-      print(response.stream.bytesToString());
+      authProvider.errorMessage = response.error ?? 'Failed to get profile';
     }
     return success;
   }

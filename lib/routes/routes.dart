@@ -7,6 +7,7 @@ import 'package:busco/ui/screens/payment_failed.dart';
 import 'package:busco/ui/screens/payment_success.dart';
 import 'package:busco/ui/screens/splash_screen.dart';
 import 'package:busco/ui/screens/tickets.dart';
+import 'package:busco/ui/screens/ticket_details.dart';
 import 'package:flutter/cupertino.dart';
 
 
@@ -19,6 +20,7 @@ final namedRoutes = {
    '/pay_success':(context)=>PaymentSuccess(),
    '/pay_failed':(context)=>PaymentFailed(),
    '/tickets':(context)=>Tickets(),
+   '/ticket_details':(context)=>TicketDetails(),
    '/confirm_payment':(context)=>PaymentConfirm(),
 
   };

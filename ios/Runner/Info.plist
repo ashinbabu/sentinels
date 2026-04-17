@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Busco uses the camera to scan bus QR codes for ticket booking.</string>
 </dict>
 </plist>

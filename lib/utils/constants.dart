@@ -5,4 +5,6 @@ import 'package:busco/utils/colors.dart';
 
 TextStyle formFieldStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black);
-const baseUrl = 'http://172.23.127.11:3000/api/';
+const defaultBaseUrl = 'http://10.0.2.2:3000/api/';
+const baseUrl =
+    String.fromEnvironment('API_BASE_URL', defaultValue: defaultBaseUrl);
