@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import { body, validationResult } from 'express-validator';
+import { body, matchedData, validationResult } from 'express-validator';
 import { env } from '../config/env.js';
 import { authRateLimit } from '../middleware/rate-limit.js';
 import { User } from '../models/user.model.js';
@@ -20,10 +20,11 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json(failure(errors.array()[0].msg, 'ERR_VALIDATION'));
     }
-      return User.create({
-      name: req.body.name,
-      email: req.body.email,
-      passwordHash: hashPassword(req.body.password),
+    const data = matchedData(req);
+    return User.create({
+      name: data.name,
+      email: data.email,
+      passwordHash: hashPassword(data.password),
     })
       .then(() => res.status(201).json(success({ registered: true })))
       .catch((err) =>
@@ -35,9 +36,10 @@ router.post(
 router.post('/login', authRateLimit, body('email').isEmail(), body('password').notEmpty(), async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json(failure(errors.array()[0].msg, 'ERR_VALIDATION'));
+  const data = matchedData(req);
 
-  const user = await User.findOne({ email: req.body.email }).lean();
-  if (!user || !verifyPassword(req.body.password, user.passwordHash)) {
+  const user = await User.findOne({ email: data.email }).lean();
+  if (!user || !verifyPassword(data.password, user.passwordHash)) {
     return res.status(401).json(failure('Invalid credentials', 'ERR_INVALID_CREDENTIALS'));
   }
 

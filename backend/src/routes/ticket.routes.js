@@ -40,11 +40,11 @@ router.post(
     const tripId = req.body.trip_id ? safeId(req.body.trip_id, 'trip_id') : '';
     const idempotencyKey = req.body.idempotency_key?.toString().trim() ?? '';
     const bookingKey =
-      idempotencyKey.isNotEmpty
+      idempotencyKey.length > 0
           ? crypto.createHash('sha256').update(idempotencyKey).digest('hex')
           : crypto.randomUUID();
 
-    if (idempotencyKey.isNotEmpty) {
+    if (idempotencyKey.length > 0) {
       const existing = await Ticket.findOne({ bookingKey }).lean();
       if (existing) return res.json(success(existing, 'idempotent_replay'));
     }

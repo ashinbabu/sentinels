@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void reassemble() {
     super.reassemble();
-    if (controller == null) return;
     if (Platform.isAndroid) {
       controller?.pauseCamera();
     } else if (Platform.isIOS) {
