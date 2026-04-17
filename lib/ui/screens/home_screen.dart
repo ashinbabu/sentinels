@@ -203,6 +203,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           showTextSnackBar(context, 'Please scan QR code first');
                           return;
                         }
+                        if (!qrData.isValid) {
+                          showTextSnackBar(context, 'Invalid QR details');
+                          return;
+                        }
                         if (_selectedDestination == null) {
                           showTextSnackBar(context, 'Please select destination');
                           return;

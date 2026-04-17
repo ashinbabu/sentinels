@@ -41,21 +41,26 @@ class TicketApi {
       String seatno,
       String busname, {
       String tripId = '',
+      String authToken = '',
     }) async {
     bool success = false;
     ticketProvider.isLoading = true;
     ticketProvider.clearError();
 
-    final response = await ApiClient.postForm('create-ticket', fields: {
-      'userId': userId,
-      'source': source,
-      'destination': destination,
-      'fare': fare,
-      'bus_id': busid,
-      'seat_no': seatno,
-      'bus_name': busname,
-      if (tripId.isNotEmpty) 'trip_id': tripId,
-    });
+    final response = await ApiClient.postForm(
+      'create-ticket',
+      authToken: authToken,
+      fields: {
+        'userId': userId,
+        'source': source,
+        'destination': destination,
+        'fare': fare,
+        'bus_id': busid,
+        'seat_no': seatno,
+        'bus_name': busname,
+        if (tripId.isNotEmpty) 'trip_id': tripId,
+      },
+    );
 
     if (response.success) {
       final dynamic ticketData = response.body['data'];

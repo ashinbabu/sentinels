@@ -38,6 +38,7 @@ class _PaymentConfirmState extends State<PaymentConfirm> {
       (bookingData['seat_no'] ?? '').toString(),
       (bookingData['bus_name'] ?? '').toString(),
       tripId: (bookingData['trip_id'] ?? '').toString(),
+      authToken: authProvider.authToken,
     );
     if (!mounted) return;
     if (success) {
