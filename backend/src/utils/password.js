@@ -10,5 +10,5 @@ export function verifyPassword(plainTextPassword, storedHash) {
   const [salt, digest] = storedHash.split(':');
   if (!salt || !digest) return false;
   const derived = crypto.pbkdf2Sync(plainTextPassword, salt, 120000, 64, 'sha512').toString('hex');
-  return crypto.timingSafeEqual(Buffer.from(derived, 'utf-8'), Buffer.from(digest, 'utf-8'));
+  return crypto.timingSafeEqual(Buffer.from(derived, 'hex'), Buffer.from(digest, 'hex'));
 }

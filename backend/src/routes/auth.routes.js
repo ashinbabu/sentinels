@@ -2,6 +2,7 @@ import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import { body, validationResult } from 'express-validator';
 import { env } from '../config/env.js';
+import { authRateLimit } from '../middleware/rate-limit.js';
 import { User } from '../models/user.model.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { failure, success } from '../utils/response.js';
@@ -10,6 +11,7 @@ const router = Router();
 
 router.post(
   '/register',
+  authRateLimit,
   body('name').trim().notEmpty(),
   body('email').isEmail().normalizeEmail(),
   body('password').isLength({ min: 6 }),
@@ -30,7 +32,7 @@ router.post(
   }
 );
 
-router.post('/login', body('email').isEmail(), body('password').notEmpty(), async (req, res) => {
+router.post('/login', authRateLimit, body('email').isEmail(), body('password').notEmpty(), async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json(failure(errors.array()[0].msg, 'ERR_VALIDATION'));
 

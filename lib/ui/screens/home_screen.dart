@@ -34,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void reassemble() {
     super.reassemble();
+    if (controller == null) return;
     if (Platform.isAndroid) {
       controller?.pauseCamera();
     } else if (Platform.isIOS) {
@@ -286,11 +287,17 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       await _getQRDetails(scanData.code!);
       _isProcessingScan = false;
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          _lastScannedCode = '';
+        }
+      });
     });
   }
 
   @override
   void dispose() {
+    _lastScannedCode = '';
     sourceController.dispose();
     seatController.dispose();
     controller?.dispose();

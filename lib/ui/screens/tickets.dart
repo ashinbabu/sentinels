@@ -28,7 +28,11 @@ class __TicketsStateState extends State<Tickets> {
       ticketProvider.error = 'Please login again';
       return;
     }
-    await TicketApi.getTickets(ticketProvider, user_id: authProvider.userId);
+    await TicketApi.getTickets(
+      ticketProvider,
+      user_id: authProvider.userId,
+      authToken: authProvider.authToken,
+    );
   }
 
   @override

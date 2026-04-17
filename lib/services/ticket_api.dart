@@ -7,12 +7,15 @@ class TicketApi {
   static final baseURL = baseUrl;
 
   static Future<bool> getTickets(TicketProvider ticketProvider,
-      {required int user_id}) async {
+      {required int user_id, String authToken = ''}) async {
     bool success = false;
     ticketProvider.isLoading = true;
     ticketProvider.clearError();
-    final response =
-        await ApiClient.postForm('get-tickets', fields: {'user_id': user_id});
+    final response = await ApiClient.postForm(
+      'get-tickets',
+      authToken: authToken,
+      fields: {'user_id': user_id},
+    );
 
     if (response.success) {
       final dynamic data = response.body['data'];
